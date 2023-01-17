@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cripto_coins/models/coin.dart';
+import 'package:flutter_cripto_coins/pages/coin_details_page.dart';
 import 'package:flutter_cripto_coins/repositories/coin_repository.dart';
 import 'package:flutter_cripto_coins/shared/themes/app_colors.dart';
 import 'package:flutter_cripto_coins/shared/themes/text_styles.dart';
@@ -48,6 +49,15 @@ class _CoinsPageState extends State<CoinsPage> {
         ),
       );
     }
+  }
+
+  void _viewCoinDetails(Coin selectedCoin) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => CoinDetailsPage(coin: selectedCoin),
+      ),
+    );
   }
 
   @override
@@ -100,6 +110,7 @@ class _CoinsPageState extends State<CoinsPage> {
                     : selectedCoins.add(coin);
               });
             },
+            onTap: () => _viewCoinDetails(coin),
           );
         },
       ),
