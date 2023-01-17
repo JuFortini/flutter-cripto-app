@@ -22,14 +22,38 @@ class _CoinsPageState extends State<CoinsPage> {
     name: "R\$",
   );
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+  PreferredSizeWidget _dynamicAppBar() {
+    if (selectedCoins.isEmpty) {
+      return AppBar(
+        backgroundColor: AppColors.primary,
+        titleTextStyle: TextStyles.titleAppBar,
         title: const Center(
           child: Text('Cripto Moedas'),
         ),
-      ),
+      );
+    } else {
+      return AppBar(
+        backgroundColor: AppColors.secondary,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded, color: AppColors.white),
+          onPressed: () {
+            setState(() {
+              selectedCoins = [];
+            });
+          },
+        ),
+        title: Text(
+          '${selectedCoins.length} selecionadas',
+          style: TextStyles.whiteTitle,
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: _dynamicAppBar(),
       body: ListView.separated(
         separatorBuilder: (context, index) => const Divider(),
         itemCount: coinList.length,
@@ -68,7 +92,7 @@ class _CoinsPageState extends State<CoinsPage> {
               style: TextStyles.fontLight,
             ),
             selected: selectedCoins.contains(coin),
-            selectedTileColor: AppColors.primary.withOpacity(0.15),
+            selectedTileColor: AppColors.secondary.withOpacity(0.15),
             onLongPress: () {
               setState(() {
                 (selectedCoins.contains(coin))
@@ -79,6 +103,19 @@ class _CoinsPageState extends State<CoinsPage> {
           );
         },
       ),
+      floatingActionButton: selectedCoins.isEmpty
+          ? null
+          : FloatingActionButton.extended(
+              onPressed: () {},
+              backgroundColor: AppColors.secondary.withOpacity(0.8),
+              elevation: 2.0,
+              icon: const Icon(Icons.star_rounded),
+              label: Text(
+                'FAVORITAR',
+                style: TextStyles.whiteSmallText,
+              ),
+            ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
